@@ -1,0 +1,30 @@
+diff --git a/thunar/thunar-renamer-dialog.c b/thunar/thunar-renamer-dialog.c
+index 123c2b925..465b09a2e 100644
+--- a/thunar/thunar-renamer-dialog.c
++++ b/thunar/thunar-renamer-dialog.c
+@@ -28,6 +28,12 @@
+ #include <string.h>
+ #endif
+ 
++#include <gdk/gdk.h>
++
++#ifdef GDK_WINDOWING_WAYLAND
++#include <gdk/gdkwayland.h>
++#endif
++
+ #include "thunar/thunar-abstract-dialog.h"
+ #include "thunar/thunar-action-manager.h"
+ #include "thunar/thunar-application.h"
+@@ -1938,6 +1944,12 @@ thunar_show_renamer_dialog (gpointer     parent,
+   thunar_application_take_window (application, GTK_WINDOW (dialog));
+   g_object_unref (G_OBJECT (application));
+ 
++  #ifdef GDK_WINDOWING_WAYLAND
++    if (standalone && window == NULL
++        && GDK_IS_WAYLAND_DISPLAY (gtk_widget_get_display (dialog)))
++      gtk_window_set_type_hint (GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_NORMAL);
++  #endif
++
+   /* display the dialog */
+   gtk_widget_show (dialog);
+ }

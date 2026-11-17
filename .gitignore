@@ -1,0 +1,5 @@
+/src/
+/pkg/
+/thunar/
+/*.pkg.tar*
+/*.src.tar*
